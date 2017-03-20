@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MyNoteBookClass</class>
+ <widget class="QMainWindow" name="MyNoteBookClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>822</width>
+    <height>737</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MyNoteBook</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>822</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSaveAs"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>选项</string>
+    </property>
+    <addaction name="actionSettings"/>
+    <addaction name="actionHelp"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_4"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="actionEncrypt"/>
+   <addaction name="actionDecrypt"/>
+   <addaction name="actionFontSizeUp"/>
+   <addaction name="actionFontSizeDown"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset>
+     <normalon>:/image/Resources/new.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>新建</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset>
+     <normalon>:/image/Resources/save.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>保存</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset>
+     <normalon>:/image/Resources/help.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>帮助</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset>
+     <normalon>:/image/Resources/settings.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>设置</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset>
+     <normalon>:/image/Resources/open.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>打开</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="icon">
+    <iconset resource="MyNoteBook.qrc">
+     <normaloff>:/image/Resources/saveAs.png</normaloff>:/image/Resources/saveAs.png</iconset>
+   </property>
+   <property name="text">
+    <string>另存为</string>
+   </property>
+  </action>
+  <action name="actionFontSizeUp">
+   <property name="icon">
+    <iconset resource="MyNoteBook.qrc">
+     <normaloff>:/image/Resources/font_size_up.png</normaloff>:/image/Resources/font_size_up.png</iconset>
+   </property>
+   <property name="text">
+    <string>字体放大</string>
+   </property>
+  </action>
+  <action name="actionFontSizeDown">
+   <property name="icon">
+    <iconset resource="MyNoteBook.qrc">
+     <normaloff>:/image/Resources/font_size_down.png</normaloff>:/image/Resources/font_size_down.png</iconset>
+   </property>
+   <property name="text">
+    <string>字体缩小</string>
+   </property>
+  </action>
+  <action name="actionEncrypt">
+   <property name="icon">
+    <iconset resource="MyNoteBook.qrc">
+     <normaloff>:/image/Resources/encrypt.png</normaloff>:/image/Resources/encrypt.png</iconset>
+   </property>
+   <property name="text">
+    <string>加密文本</string>
+   </property>
+  </action>
+  <action name="actionDecrypt">
+   <property name="icon">
+    <iconset resource="MyNoteBook.qrc">
+     <normaloff>:/image/Resources/decrypt.png</normaloff>:/image/Resources/decrypt.png</iconset>
+   </property>
+   <property name="text">
+    <string>解密文本</string>
+   </property>
+   <property name="toolTip">
+    <string>解密文本</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="MyNoteBook.qrc"/>
+ </resources>
+ <connections/>
+</ui>

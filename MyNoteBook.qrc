@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="MyNoteBook"/>
+  <qresource prefix="image">
+    <file>Resources/font_set.png</file>
+    <file>Resources/decrypt.png</file>
+    <file>Resources/encrypt.png</file>
+    <file>Resources/font_size_down.png</file>
+    <file>Resources/font_size_up.png</file>
+    <file>Resources/saveAs.png</file>
+    <file>Resources/open.png</file>
+    <file>Resources/help.png</file>
+    <file>Resources/new.png</file>
+    <file>Resources/save.png</file>
+    <file>Resources/settings.png</file>
+  </qresource>
+</RCC>
