@@ -7,17 +7,28 @@
 #include "PasswordDialog.h"
 #include "SettingsDialog.h"
 #include "Settings.h"
+#include <QMimeData>
+using std::string;
 
 MyNoteBook::MyNoteBook(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 
+	//设置状态栏
 	m_labelName = new QLabel();
 	m_labelName->setMinimumWidth(300);
 	ui.statusBar->addWidget(m_labelName);
+	
+	//从配置文件设置字体大小
 	setPlainTextSize();
-	encryptFlag = GBK::ToUnicode("{cf}"); //设置加密标志
+
+	//设置加密标志
+	encryptFlag = GBK::ToUnicode("{cf}");
+
+	//禁止子控件plainTextEdit拖放事件，让拖放事件给父窗口处理
+	ui.plainTextEdit->setAcceptDrops(false);
+	setAcceptDrops(true);
 
 	connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(OnMenuNew()));
 	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(OnMenuSave()));
@@ -89,34 +100,13 @@ int MyNoteBook::OnMenuOpen()
 {
 	QString filepath = QFileDialog::getOpenFileName(this,
 		GBK::ToUnicode("打开文件"));
+
 	if (filepath.length() == 0) return -1;
 
 	//打开文件
-	string filename = GBK::FromUnicode(filepath);
-	FILE *fp = fopen(filename.c_str(), "rb");
-	//文件的大小
-	fseek(fp, 0, SEEK_END);
-	int filesize = ftell(fp);
+	readFile(filepath);
 
-	//读取内容
-	fseek(fp, 0, SEEK_SET);
-	char* buf = new char[filesize + 1];
-	int n = fread(buf, 1, filesize, fp);
-	if (n > 0)
-	{
-		buf[n] = 0;
 
-		//显示到文本框中
-		ui.plainTextEdit->setPlainText(GBK::ToUnicode(buf));
-		this->setWindowTitle(GBK::ToUnicode(filename)); //修改窗口标题
-	}
-	delete[] buf; //释放内存
-
-	m_filepath = filepath;
-	fclose(fp);
-	//状态栏显示
-	ui.statusBar->showMessage(GBK::ToUnicode("已打开"), 3000);
-	m_labelName->setText(filepath);
 	return 0;
 }
 
@@ -202,6 +192,81 @@ int MyNoteBook::OnMenuDecrypt()
 		QString oldText = ui.plainTextEdit->toPlainText();
 		QString text = oldText.left(oldText.size() - encryptFlagLen); //删除尾部的加密标志字符串
 		ui.plainTextEdit->setPlainText(Encryption::Decrypt(pwdKey, text));
+	}
+	return 0;
+}
+
+void MyNoteBook::dragEnterEvent(QDragEnterEvent * event)
+{
+	//接受文件拖入
+	if (event->mimeData()->hasFormat("text/uri-list"))
+	{
+		QString falepath = event->mimeData()->text();
+		//只有txt文件才允许drop
+		if (falepath.endsWith("txt"))
+		{
+			event->acceptProposedAction();
+		}
+	}
+	//接受文本内容拖入
+	else if (event->mimeData()->hasFormat("text/plain"))
+	{
+		event->acceptProposedAction();
+	}
+	return;
+}
+
+void MyNoteBook::dropEvent(QDropEvent * event)
+{
+	QString text = event->mimeData()->text();
+	if (event->mimeData()->hasFormat("text/uri-list"))
+	{
+		//通过拖放打开文件时，须将传入的文件路径前的"file:\\\"删除
+		string t = GBK::FromUnicode(text).substr(8);
+		QString filepath(GBK::ToUnicode(t));
+		readFile(filepath);
+	}
+	else if (event->mimeData()->hasFormat("text/plain"))
+	{
+		ui.plainTextEdit->appendPlainText(text);
+	}
+	return;
+}
+
+int MyNoteBook::readFile(QString filepath)
+{
+	string filename = GBK::FromUnicode(filepath);
+	if (filename.length() == 0) return -1;
+	FILE *fp = fopen(filename.c_str(), "rb");
+	//文件的大小
+	fseek(fp, 0, SEEK_END);
+	int filesize = ftell(fp);
+
+	//读取内容
+	fseek(fp, 0, SEEK_SET);
+	char* buf = new char[filesize + 1];
+	int n = fread(buf, 1, filesize, fp);
+
+	if (n > 0)
+	{
+		buf[n] = 0;
+
+		//显示到文本框中
+		ui.plainTextEdit->setPlainText(GBK::ToUnicode(buf));
+		this->setWindowTitle(GBK::ToUnicode(filename)); //修改窗口标题
+	}
+	delete[] buf; //释放内存
+	fclose(fp);
+	m_filepath = filepath;
+
+	//状态栏显示
+	ui.statusBar->showMessage(GBK::ToUnicode("已打开"), 3000);
+	m_labelName->setText(filepath);
+
+	//判断文本是否经过了加密
+	if (isEncrypt())
+	{
+		OnMenuDecrypt();
 	}
 	return 0;
 }
